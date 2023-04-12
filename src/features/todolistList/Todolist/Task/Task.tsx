@@ -3,7 +3,7 @@ import {Checkbox, IconButton} from '@mui/material'
 import {EditableSpan} from 'components/EditableSpan/EditableSpan'
 import {Delete} from '@mui/icons-material'
 import {TaskStatuses, TaskType} from 'api/todolists-api'
-import {removeTaskTC, updateTaskTC} from "features/todolistList/tasks-reducer"
+import {tasksThunks, updateTaskTC} from "features/todolistList/tasks-reducer"
 import {useAppDispatch} from "hooks/useAppDispatch"
 
 
@@ -16,9 +16,11 @@ export const Task = React.memo((props: TaskPropsType) => {
 
   const dispatch = useAppDispatch()
 
-  const removeTask = useCallback(() => {
-    dispatch(removeTaskTC(props.task.id, props.todolistId))
-  }, [dispatch, props.task.id, props.todolistId])
+  const delTask = useCallback(() => {
+    dispatch(tasksThunks.removeTask({taskId: props.task.id, todolistId: props.todolistId}))
+  }, [])
+
+
 
   const changeTaskTitle = useCallback((newTitle: string) => {
     dispatch(updateTaskTC(props.task.id, {title: newTitle}, props.todolistId))
@@ -34,7 +36,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}>
       <Checkbox checked={props.task.status === TaskStatuses.Completed} color="primary" onChange={changeStatus}/>
       <EditableSpan value={props.task.title} onChange={changeTaskTitle}/>
-      <IconButton onClick={removeTask}>
+      <IconButton onClick={delTask}>
         <Delete/>
       </IconButton>
     </div>

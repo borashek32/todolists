@@ -1,4 +1,4 @@
-import {tasksActions, tasksReducer, TasksStateType} from './tasks-reducer'
+import {tasksActions, tasksReducer, TasksStateType, tasksThunks} from './tasks-reducer'
 
 import {todolistActions} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from 'api/todolists-api'
@@ -62,14 +62,33 @@ test('correct task should be deleted from correct array', () => {
 });
 test('correct task should be added to correct array', () => {
 
-  const endState = tasksReducer(startState, tasksActions.addTask(model))
+  const task = {
+    todoListId: 'todolistId2',
+    title: 'juce',
+    status: TaskStatuses.New,
+    addedDate: '',
+    deadline: '',
+    description: '',
+    order: 0,
+    priority: 0,
+    startDate: '',
+    id: 'id exists'
+  }
 
-  expect(endState["todolistId1"].length).toBe(3);
-  expect(endState["todolistId2"].length).toBe(4);
-  expect(endState["todolistId2"][0].id).toBeDefined();
-  expect(endState["todolistId2"][0].title).toBe("juce");
-  expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
+  const action = tasksThunks.addTask.fulfilled(
+    {task},
+    'requestId',
+    {title: task.title, todolistId: task.todoListId});
+
+  const endState = tasksReducer(startState, action)
+
+  expect(endState['todolistId1'].length).toBe(3);
+  expect(endState['todolistId2'].length).toBe(4);
+  expect(endState['todolistId2'][0].id).toBeDefined();
+  expect(endState['todolistId2'][0].title).toBe('juce');
+  expect(endState['todolistId2'][0].status).toBe(TaskStatuses.New);
 });
+
 test('status of specified task should be changed', () => {
   const model: UpdateTaskModelType = {
     deadline: '',
@@ -158,8 +177,12 @@ test('empty arrays should be added when we set todolists', () => {
   expect(endState['1']).toBeDefined()
   expect(endState['2']).toBeDefined()
 })
+
 test('tasks should be added for todolist', () => {
-  const action = tasksActions.SetTasks({tasks: startState["todolistId1"], todolistId: "todolistId1"});
+  const action = tasksThunks.fetchTasks.fulfilled({
+    tasks: startState["todolistId1"],
+    todolistId: "todolistId1"
+  }, "requestId", "todolistId1");
 
   const endState = tasksReducer({
     "todolistId2": [],
