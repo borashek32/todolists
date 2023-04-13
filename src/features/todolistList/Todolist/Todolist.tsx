@@ -3,8 +3,8 @@ import {AddItemForm} from 'components/AddItemForm/AddItemForm'
 import {EditableSpan} from 'components/EditableSpan/EditableSpan'
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from 'api/todolists-api'
-import {changeTodolistTitleTC, FilterValuesType, removeTodolistTC, todolistActions, TodolistDomainType} from '../todolists-reducer'
-import {addTask, fetchTasks, tasksThunks} from '../tasks-reducer'
+import {FilterValuesType, todolistsActions, TodolistDomainType, todolistsThunks} from '../todolists-reducer'
+import {tasksThunks} from '../tasks-reducer'
 import {useAppDispatch} from 'hooks/useAppDispatch'
 import {Button, IconButton} from '@mui/material'
 import {Delete} from '@mui/icons-material'
@@ -22,7 +22,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
 
   useEffect(() => {
     if (demo) return
-    dispatch(fetchTasks(props.todolist.id))
+    dispatch(tasksThunks.fetchTasks(props.todolist.id))
   }, [])
 
 
@@ -30,12 +30,18 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     dispatch(tasksThunks.addTask({title, todolistId: props.todolist.id}))
   }, [dispatch, props.todolist.id])
 
+  const removeTodolist = useCallback(() => {
+    dispatch(todolistsThunks.removeTodolist({todolistId: props.todolist.id}))
+  }, [dispatch, props.todolist.id])
 
-  const removeTodolist = useCallback(() => dispatch(removeTodolistTC(props.todolist.id)), [dispatch, props.todolist.id])
-  const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodolistTitleTC(props.todolist.id, title)), [dispatch, props.todolist.id])
+  const changeTodolistTitle = useCallback((title: string) => {
+    dispatch(todolistsThunks.changeTodolistTitle({todolistId: props.todolist.id, title}))
+  }, [dispatch, props.todolist.id])
+
+
 
   const changeFilter = useCallback((value: FilterValuesType) => {
-    dispatch(todolistActions.changeTodolistFilter({id: props.todolist.id, filter: value}))
+    dispatch(todolistsActions.changeTodolistFilter({id: props.todolist.id, filter: value}))
   }, [dispatch, props.todolist.id])
 
   let tasksForTodolist = props.tasks

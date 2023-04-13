@@ -3,7 +3,7 @@ import {Checkbox, IconButton} from '@mui/material'
 import {EditableSpan} from 'components/EditableSpan/EditableSpan'
 import {Delete} from '@mui/icons-material'
 import {TaskStatuses, TaskType} from 'api/todolists-api'
-import {tasksThunks, updateTaskTC} from "features/todolistList/tasks-reducer"
+import {tasksThunks} from "features/todolistList/tasks-reducer"
 import {useAppDispatch} from "hooks/useAppDispatch"
 
 
@@ -20,16 +20,14 @@ export const Task = React.memo((props: TaskPropsType) => {
     dispatch(tasksThunks.removeTask({taskId: props.task.id, todolistId: props.todolistId}))
   }, [])
 
-
-
-  const changeTaskTitle = useCallback((newTitle: string) => {
-    dispatch(updateTaskTC(props.task.id, {title: newTitle}, props.todolistId))
-  }, [dispatch, props.task.id, props.todolistId])
+  const changeTaskTitle = useCallback((title: string) => {
+    dispatch(tasksThunks.updateTask({taskId: props.task.id, domainModel: {title}, todolistId: props.todolistId}))
+  }, [])
 
   const changeStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     let status: TaskStatuses
-    e.currentTarget.checked ? status = TaskStatuses.Completed : status =TaskStatuses.New
-    dispatch(updateTaskTC(props.task.id, {status}, props.todolistId))
+    e.currentTarget.checked ? status = TaskStatuses.Completed : status = TaskStatuses.New
+    dispatch(tasksThunks.updateTask({taskId: props.task.id, domainModel: {status}, todolistId: props.todolistId}))
   }, [])
 
   return (
