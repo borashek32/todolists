@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {Grid, Paper} from '@mui/material'
-import {AddItemForm} from 'components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom'
-import {useAppDispatch} from 'hooks/useAppDispatch'
+import {useAppDispatch} from 'common/hooks/useAppDispatch'
 import {selectTasks, selectTodolists} from "features/todolistList/todolistsList.selector"
 import {selectIsLoggedIn} from "features/auth/auth.selector"
 import {todolistsThunks} from "features/todolistList/todolists-reducer";
+import {AddItemForm} from "common/components";
 
 
 type PropsType = {

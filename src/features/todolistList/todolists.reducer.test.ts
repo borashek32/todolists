@@ -5,9 +5,9 @@ import {
 	todolistsReducer,
 	todolistsThunks
 } from "./todolists-reducer"
-import {v1} from "uuid";
-import {TodolistType} from "api/todolists-api";
-import {RequestStatusType} from "app/app-reducer";
+import {v1} from "uuid"
+import {RequestStatusType} from "app/app-reducer"
+import {TodolistType} from "features/todolistList/todolists.api";
 
 
 let todolistId1: string
@@ -28,7 +28,7 @@ test('correct todolist should be removed', () => {
 		startState,
 		todolistsThunks.removeTodolist.fulfilled(
 			{todolistId: todolistId1},
-			'requestId', {todolistId: todolistId1}
+			'requestId', todolistId1
 		)
 	)
 

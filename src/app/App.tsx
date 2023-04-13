@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import './App.css'
-import {Navigate, useNavigate} from 'react-router-dom'
 import { TodolistsList } from 'features/todolistList/TodolistsList'
-import { ErrorSnackbar } from 'components/ErrorSnackbar/ErrorSnackbar'
 import { useSelector } from 'react-redux'
 import { initializeAppTC } from './app-reducer'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -10,9 +8,10 @@ import { Login } from 'features/auth/Login'
 import { logoutTC } from 'features/auth/auth.reducer'
 import {AppBar, Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material'
 import { Menu } from '@mui/icons-material'
-import {useAppDispatch} from "hooks/useAppDispatch"
+import {useAppDispatch} from "common/hooks/useAppDispatch"
 import {selectIsLoggedIn} from "features/auth/auth.selector"
 import {selectIsInitialized, selectStatus} from "app/app.selector"
+import {ErrorSnackbar} from "common/components";
 
 type PropsType = {
 	demo?: boolean

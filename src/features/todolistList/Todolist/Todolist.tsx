@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm} from 'components/AddItemForm/AddItemForm'
-import {EditableSpan} from 'components/EditableSpan/EditableSpan'
 import {Task} from './Task/Task'
-import {TaskStatuses, TaskType} from 'api/todolists-api'
 import {FilterValuesType, todolistsActions, TodolistDomainType, todolistsThunks} from '../todolists-reducer'
 import {tasksThunks} from '../tasks-reducer'
-import {useAppDispatch} from 'hooks/useAppDispatch'
+import {useAppDispatch} from 'common/hooks/useAppDispatch'
 import {Button, IconButton} from '@mui/material'
 import {Delete} from '@mui/icons-material'
+import {AddItemForm, EditableSpan} from "common/components";
+import {TaskStatuses} from "common/enums/common.enums";
+import {TaskType} from "features/todolistList/todolists.api";
 
 
 type PropsType = {
@@ -31,7 +31,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
   }, [dispatch, props.todolist.id])
 
   const removeTodolist = useCallback(() => {
-    dispatch(todolistsThunks.removeTodolist({todolistId: props.todolist.id}))
+    dispatch(todolistsThunks.removeTodolist(props.todolist.id))
   }, [dispatch, props.todolist.id])
 
   const changeTodolistTitle = useCallback((title: string) => {
